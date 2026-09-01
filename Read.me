@@ -1,0 +1,161 @@
+# Binary Search vs Linear Search — Empirical Performance Analysis
+
+## Research Paper
+
+**Binary Search versus Linear Search: An Empirical Comparative Analysis of Search Efficiency Across Different Dataset Sizes**
+
+### Authors
+
+- **Sai Ganesh Mandhati**
+- **Shlok Uprit**
+
+**Department of CSE (AI & ML)**  
+**Marwadi University**
+
+---
+
+## Abstract
+
+This research presents an empirical comparison of iterative Linear Search and Binary Search across dataset sizes ranging from 10 to 10,000,000 elements.
+
+The study evaluates practical execution latency, target-position sensitivity, successful and unsuccessful searches, sorting preprocessing overhead, repeated-query amortization, and benchmarking methodology on an Apple M1 ARM64 architecture.
+
+A total of **98,000 trial-level observations** were evaluated using high-precision timing methodologies.
+
+The results demonstrate that although Binary Search provides logarithmic asymptotic performance, Linear Search can be competitive or faster for very small datasets due to constant factors and implementation overhead.
+
+For large datasets, Binary Search provides substantial performance improvements, reaching a measured speedup of approximately **6,198× for average-case queries** and **91,425× for absent queries** at N = 10,000,000.
+
+---
+
+## Key Findings
+
+| Dataset Size | Linear Search | Binary Search | Speedup |
+|---:|---:|---:|---:|
+| 10 | 7.66 ns | 11.64 ns | 0.66× |
+| 100 | 26.00 ns | 26.16 ns | 0.99× |
+| 1,000 | 173.35 ns | 40.48 ns | 4.28× |
+| 10,000 | 1,581.21 ns | 55.51 ns | 28.49× |
+| 100,000 | 15,726.68 ns | 77.57 ns | 202.73× |
+| 1,000,000 | 161,573.90 ns | 107.92 ns | 1,497.12× |
+| 10,000,000 | 1,617,738.52 ns | 260.99 ns | 6,198.52× |
+
+For unsuccessful searches at N = 10,000,000, Binary Search achieved a measured speedup of approximately **91,425×**.
+
+---
+
+## Research Questions
+
+The study investigates:
+
+1. How execution time scales with dataset size.
+2. How target position influences search latency.
+3. Differences between successful and unsuccessful searches.
+4. The impact of sorting preprocessing.
+5. The number of repeated queries required to justify sorting.
+6. Sensitivity to timing methodology.
+7. Correlation between comparison counts and wall-clock time.
+8. Universal versus architecture-specific findings.
+
+---
+
+## Experimental Environment
+
+- **CPU:** Apple M1
+- **Architecture:** ARM64
+- **RAM:** 8 GB Unified LPDDR4X
+- **Operating System:** macOS 26.6.2
+- **Compiler:** Apple Clang 21
+- **Language:** C++17
+- **Optimization:** `-O3`
+- **Timer:** `std::chrono::steady_clock`
+- **Dataset Type:** 32-bit signed integers
+- **Dataset Range:** 10 to 10,000,000 elements
+
+---
+
+## Search Algorithms
+
+### Linear Search
+
+Linear Search checks elements sequentially until the target is found or the dataset is exhausted.
+
+**Average Case:** Θ(n)  
+**Worst Case:** Θ(n)  
+**Space:** O(1)
+
+### Binary Search
+
+Binary Search repeatedly divides a sorted search space into halves.
+
+**Average Case:** Θ(log n)  
+**Worst Case:** Θ(log n)  
+**Space:** O(1)
+
+---
+
+## Experimental Conditions
+
+The benchmark evaluates:
+
+- Beginning
+- Quarter
+- Middle
+- Three-Quarter
+- End
+- Absent
+- Random Success
+
+The experiments also compare single-shot timing with batched amortized timing.
+
+---
+
+## Sorting and Query Amortization
+
+Binary Search requires sorted data.
+
+For unsorted data, the study evaluates the additional cost of `std::sort` and determines the repeated-query break-even point.
+
+For dataset sizes from 1,000 to 10,000,000, the measured break-even threshold remained approximately:
+
+**114–140 queries**
+
+This threshold is specific to the evaluated hardware, compiler, data type, and workload.
+
+---
+
+## Main Conclusion
+
+The study confirms the practical relevance of asymptotic complexity while demonstrating that real-world performance also depends on hardware architecture, cache behavior, implementation overhead, dataset size, target position, and workload characteristics.
+
+Linear Search can be advantageous for very small datasets and beginning-target queries.
+
+Binary Search becomes increasingly advantageous as dataset size and repeated-query workloads increase.
+
+The measured results should not be considered universally applicable to every hardware platform. Independent benchmarking is required for different architectures and workloads.
+
+---
+
+## Repository Structure
+
+```text
+binary-vs-linear-search-analysis/
+│
+├── README.md
+├── Binary_vs_Linear_Search_Research_Paper.pdf
+│
+├── src/
+│   └── benchmark.cpp
+│
+├── results/
+│   └── benchmark_results.csv
+│
+└── figures/
+    ├── figure1.png
+    ├── figure2.png
+    ├── figure3.png
+    ├── figure4.png
+    ├── figure5.png
+    ├── figure6.png
+    ├── figure7.png
+    └── figure8.png
